@@ -4,3 +4,7 @@ D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Par
 D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.csproj.CoreCompileInputs.cache
 D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.dll
 D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.pdb
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\bin\Debug\Parameters.addin
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.g.resources
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.Resource.resources
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.csproj.GenerateResource.cache
