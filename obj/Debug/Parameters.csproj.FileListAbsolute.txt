@@ -1,0 +1,6 @@
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\bin\Debug\Parameters.dll
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\bin\Debug\Parameters.pdb
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.csproj.AssemblyReference.cache
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.csproj.CoreCompileInputs.cache
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.dll
+D:\KEVIN\Kevin\Trabajo\ENG\Technical Test - Addin Revit\Parameters\obj\Debug\Parameters.pdb

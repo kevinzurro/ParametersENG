@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>Parameters</Name>
+		<Assembly>Parameters.dll</Assembly>
+		<AddInId>e7aa58fb-bb8b-4bb1-81fb-29d8c4a16793</AddInId>
+		<FullClassName>Parameters.Main</FullClassName>
+		<Text>Parameters</Text>
+		<VendorId>ZURROKEVIN</VendorId>
+		<VendorDescription>Kevin Zurro</VendorDescription>
+	</AddIn>
+</RevitAddIns>
