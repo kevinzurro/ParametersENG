@@ -19,7 +19,8 @@ namespace Parameters.Models
     public class ParameterScannerModel : ModelBase
     {
         private View vistaActual;
-        private List<Element> todosElementos;
+        private ObservableCollection<ElementoParametro> todosParametros;
+        private List<Element> todosElementos = new List<Element>();
 
         public ParameterScannerModel(UIApplication UIApp)
         {
@@ -29,11 +30,18 @@ namespace Parameters.Models
             this.Doc = UIDoc.Document;
 
             vistaActual = Doc.ActiveView;
-
+            
             todosElementos = new FilteredElementCollector(Doc).WhereElementIsNotElementType().Cast<Element>().ToList();
+
+            todosParametros = TodosLosParametros();
         }
 
-        public ObservableCollection<ElementoParametro> Parametros()
+        public ObservableCollection<ElementoParametro> TodosParametros
+        {
+            get { return todosParametros; }
+        }
+
+        private ObservableCollection<ElementoParametro> TodosLosParametros()
         {
             try
             {
@@ -41,39 +49,40 @@ namespace Parameters.Models
 
                 List<ParameterElement> colector = new FilteredElementCollector(Doc).
                                                       OfClass(typeof(ParameterElement)).
-                                                      Cast<ParameterElement>().ToList();
-
-                colector = colector.OrderBy(x => x.Name).ToList();
+                                                      Cast<ParameterElement>().
+                                                      OrderBy(x=>x.Name).
+                                                      ToList();
 
                 foreach (ParameterElement defi in colector)
                 {
                     if (defi != null)
                     {
-                        ElementoParametro elem = new ElementoParametro(defi);
-
-                        obsParam.Add(elem);
+                        obsParam.Add(new ElementoParametro(defi));
                     }
                 }
 
                 return obsParam;
             }
-            catch (Exception e) 
-            { 
+
+            catch (Exception e)
+            {
                 Debug.WriteLine(e.Message + "\n" + e.StackTrace);
 
                 return null;
             }
         }
 
-        public void AislarElementos(ElementoParametro parametro)
+        public void AislarElementos(ElementoParametro parametro, object valor)
         {
             if(vistaActual is View3D ||
                vistaActual is ViewPlan &&
                vistaActual != null)
             {
-                using(Transaction tr = new Transaction(Doc, "Isolates elements"))
+                using(Transaction tr = new Transaction(Doc, "Isolate elements"))
                 {
                     tr.Start();
+
+                    vistaActual.TemporaryViewModes.DeactivateAllModes();
 
                     List<ElementId> elementos = new List<ElementId>();
 
@@ -83,7 +92,19 @@ namespace Parameters.Models
 
                         if (param != null)
                         {
-                            elementos.Add(elem.Id);
+                            if (valor.ToString() == null || valor.ToString() == string.Empty)
+                            {
+                                elementos.Add(elem.Id);
+                            }
+                            else
+                            {
+                                string valorParametro = param.AsString() != null ? param.AsString() : param.AsValueString();
+
+                                if (valorParametro == valor.ToString())
+                                {
+                                    elementos.Add(elem.Id);
+                                }
+                            }
                         }
                     }
 
@@ -92,6 +113,11 @@ namespace Parameters.Models
                     tr.Commit();
                 }
             }
+        }
+
+        public void SeleccionarElementos(ElementoParametro Parametro)
+        {
+
         }
     }
 }

@@ -37,9 +37,16 @@ namespace Parameters
 
                 scanner.ShowDialog();
 
-                scanner.Close();
+                if (scanner.DialogResult == true)
+                {
+                    tg.Assimilate();
+                }
+                else
+                {
+                    tg.RollBack();
+                }
 
-                tg.Commit();
+                scanner.Close();
             }
 
             return Result.Succeeded;

@@ -13,6 +13,12 @@ namespace Parameters.Models
         private int id;
         private string nombre;
 
+        public ElementoParametro(Parameter param)
+        {
+            ID = param.Id.IntegerValue;
+            Nombre = param.Definition.Name;
+        }
+
         public ElementoParametro(ParameterElement param)
         {
             ID = param.Id.IntegerValue;
