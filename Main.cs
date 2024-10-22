@@ -21,7 +21,7 @@ namespace Parameters
 
             PushButton botonParameter = panelDetalleArmado.AddItem(new PushButtonData("btnParameter", "Parameter Scanner", RutaDelEnsamblado, "Parameters.cmdParameterScanner")) as PushButton;
 
-            botonParameter.LargeImage = new BitmapImage(new Uri("pack://application:,,,/Jump;component/Resources/Ico.png"));
+            botonParameter.LargeImage = new BitmapImage(new Uri("pack://application:,,,/Jump;component/Resources/Icons64x64.png"));
 
             return Result.Succeeded;
         }

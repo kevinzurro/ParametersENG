@@ -1,0 +1,127 @@
+﻿<Window x:Class="Parameters.Views.WinParameterScanner"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:Parameters"
+        xmlns:model="clr-namespace:Parameters.Models"
+        xmlns:vm="clr-namespace:Parameters.ViewModels"
+        mc:Ignorable="d" 
+        d:DesignHeight="240" d:DesignWidth="400"
+        MinHeight="240" MaxHeight="240" MinWidth="400" MaxWidth="400"
+        Height="240" Width="400"
+        Title="Parameter Scanner"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+
+    <Window.DataContext>
+
+        <vm:ParameterScannerViewModel/>
+
+    </Window.DataContext>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+
+        </Grid.RowDefinitions>
+
+        <Image Grid.Row="0"
+               Height="60"
+               Width="60"
+               Source="/Parameters;component/Resources/Icons64x64.png"
+               Stretch="Fill"
+               Margin="10">
+        </Image>
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       Text="Parameter Name"
+                       Margin="5">
+            </TextBlock>
+
+            <ComboBox Grid.Column="1"
+                      Margin="5,5,20,5"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding Parametros}"
+                      SelectedItem="{Binding Parametro}"
+                      IsEditable="True">
+
+                <ComboBox.ItemTemplate>
+
+                    <HierarchicalDataTemplate DataType="{x:Type model:ElementoParametro}">
+
+                        <TextBlock Text="{Binding NombreID}"/>
+
+                    </HierarchicalDataTemplate>
+
+                </ComboBox.ItemTemplate>
+                
+            </ComboBox>
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       Text="Parameter Value"
+                       Margin="5">
+            </TextBlock>
+
+            <TextBox Grid.Column="1"
+                     Margin="5,5,20,5"
+                     HorizontalAlignment="Stretch">
+            </TextBox>
+
+        </Grid>
+
+        <Grid Grid.Row="3">
+
+            <Grid.ColumnDefinitions>
+
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Height="30"
+                    Width="100"
+                    Content="Isolate in View"
+                    Margin="10"
+                    Command="{Binding AislarCommand}">
+            </Button>
+
+            <Button Grid.Column="1"
+                    Height="30"
+                    Width="100"
+                    Content="Select"
+                    Margin="10"
+                    Command="{Binding SeleccionarCommand}">
+            </Button>
+
+        </Grid>
+        
+    </Grid>
+</Window>

@@ -63,9 +63,9 @@ namespace Parameters {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Ico {
+        internal static System.Drawing.Bitmap Icons64x64 {
             get {
-                object obj = ResourceManager.GetObject("Ico", resourceCulture);
+                object obj = ResourceManager.GetObject("Icons64x64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
