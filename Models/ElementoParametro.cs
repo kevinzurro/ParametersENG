@@ -10,25 +10,11 @@ namespace Parameters.Models
 {
     public class ElementoParametro
     {
-        private int id;
         private string nombre;
-
-        public ElementoParametro(Parameter param)
-        {
-            ID = param.Id.IntegerValue;
-            Nombre = param.Definition.Name;
-        }
 
         public ElementoParametro(ParameterElement param)
         {
-            ID = param.Id.IntegerValue;
             Nombre = param.Name;
-        }
-
-        public int ID
-        {
-            get { return id; }
-            set { id = value; }
         }
 
         public string Nombre
@@ -37,17 +23,9 @@ namespace Parameters.Models
             set { nombre = value; }
         }
 
-        public string NombreID
-        {
-            get
-            {
-                return nombre + " <" + id + ">";
-            }
-        }
-
         public override string ToString()
         {
-            return NombreID;
+            return Nombre;
         }
     }
 }

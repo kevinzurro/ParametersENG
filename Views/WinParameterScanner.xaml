@@ -63,7 +63,7 @@
 
                     <HierarchicalDataTemplate DataType="{x:Type model:ElementoParametro}">
 
-                        <TextBlock Text="{Binding NombreID}"/>
+                        <TextBlock Text="{Binding Nombre}"/>
 
                     </HierarchicalDataTemplate>
 

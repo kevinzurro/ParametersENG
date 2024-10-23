@@ -13,6 +13,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Data.OleDb;
+using Autodesk.Revit.DB.Electrical;
+using System.Drawing;
 
 namespace Parameters.Models
 {
@@ -56,7 +58,7 @@ namespace Parameters.Models
 
                 foreach (ParameterElement defi in colector)
                 {
-                    if (defi != null)
+                    if (defi != null && obsParam.Where(x => x.Nombre == defi.Name).ToList().Count == 0)
                     {
                         obsParam.Add(new ElementoParametro(defi));
                     }
@@ -68,9 +70,11 @@ namespace Parameters.Models
             catch (Exception){ return null; }
         }
 
-        public void AislarElementos(ElementoParametro parametro, object valor)
+        public void AislarElementos(ElementoParametro parametro, object value)
         {
             ViewType tipoVista = vistaActual.ViewType;
+
+            string valor = value.ToString();
 
             if (tipoVista is ViewType.ThreeD ||
                 tipoVista is ViewType.CeilingPlan ||
@@ -90,7 +94,7 @@ namespace Parameters.Models
 
                             if (param != null)
                             {
-                                if (valor.ToString() == null || valor.ToString() == string.Empty)
+                                if (valor == null || valor == string.Empty)
                                 {
                                     elementosSeleccionados.Add(elem.Id);
                                 }
@@ -108,7 +112,12 @@ namespace Parameters.Models
                         catch (Exception) { }
                     }
 
-                    vistaActual.IsolateElementsTemporary(elementosSeleccionados);
+                    if (elementosSeleccionados.Count > 0)
+                    {
+                        vistaActual.IsolateElementsTemporary(elementosSeleccionados);
+                        
+                        TaskDialog.Show("Parameter Scanner", elementosSeleccionados.Count.ToString() + " items were found with the value " + valor);
+                    }
 
                     tr.Commit();
                 }

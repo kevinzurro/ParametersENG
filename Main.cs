@@ -17,11 +17,13 @@ namespace Parameters
         {
             string RutaDelEnsamblado = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
+            application.CreateRibbonTab("Parameters");
+
             RibbonPanel panelScanner = application.CreateRibbonPanel("Parameters", "Parameters");
 
-            PushButton botonParameter = panelScanner.AddItem(new PushButtonData("btnParameter", "Parameter Scanner", RutaDelEnsamblado, "Parameters.ParameterScanner")) as PushButton;
+            PushButton botonParameter = panelScanner.AddItem(new PushButtonData("btnParameter", "Parameter\nScanner", RutaDelEnsamblado, "Parameters.ParameterScanner")) as PushButton;
 
-            botonParameter.LargeImage = new BitmapImage(new Uri("pack://application:,,,/Jump;component/Resources/Icons64x64.png"));
+            botonParameter.LargeImage = new BitmapImage(new Uri("pack://application:,,,/Parameters;component/Resources/Icons32x32.png"));
 
             return Result.Succeeded;
         }

@@ -83,7 +83,9 @@
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons32x32.png" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Views\WinParameterScanner.xaml">
       <SubType>Designer</SubType>
