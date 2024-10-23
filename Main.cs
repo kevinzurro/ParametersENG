@@ -13,20 +13,20 @@ namespace Parameters
     [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
     public class Main : IExternalApplication
     {
-        public Result OnShutdown(UIControlledApplication application)
+        public Result OnStartup(UIControlledApplication application)
         {
             string RutaDelEnsamblado = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-            RibbonPanel panelDetalleArmado = application.CreateRibbonPanel("Parameters", "Parameters");
+            RibbonPanel panelScanner = application.CreateRibbonPanel("Parameters", "Parameters");
 
-            PushButton botonParameter = panelDetalleArmado.AddItem(new PushButtonData("btnParameter", "Parameter Scanner", RutaDelEnsamblado, "Parameters.cmdParameterScanner")) as PushButton;
+            PushButton botonParameter = panelScanner.AddItem(new PushButtonData("btnParameter", "Parameter Scanner", RutaDelEnsamblado, "Parameters.ParameterScanner")) as PushButton;
 
             botonParameter.LargeImage = new BitmapImage(new Uri("pack://application:,,,/Jump;component/Resources/Icons64x64.png"));
 
             return Result.Succeeded;
         }
 
-        public Result OnStartup(UIControlledApplication application)
+        public Result OnShutdown(UIControlledApplication application)
         {
             return Result.Succeeded;
         }
