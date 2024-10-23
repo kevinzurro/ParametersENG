@@ -21,6 +21,7 @@ namespace Parameters.Models
         private View vistaActual;
         private ObservableCollection<ElementoParametro> todosParametros;
         private List<Element> todosElementos = new List<Element>();
+        private List<ElementId> elementosSeleccionados = new List<ElementId>();
 
         public ParameterScannerModel(UIApplication UIApp)
         {
@@ -64,19 +65,16 @@ namespace Parameters.Models
                 return obsParam;
             }
 
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message + "\n" + e.StackTrace);
-
-                return null;
-            }
+            catch (Exception){ return null; }
         }
 
         public void AislarElementos(ElementoParametro parametro, object valor)
         {
-            if(vistaActual is View3D ||
-               vistaActual is ViewPlan &&
-               vistaActual != null)
+            ViewType tipoVista = vistaActual.ViewType;
+
+            if (tipoVista is ViewType.ThreeD ||
+                tipoVista is ViewType.CeilingPlan ||
+                tipoVista is ViewType.FloorPlan)
             {
                 using(Transaction tr = new Transaction(Doc, "Isolate elements"))
                 {
@@ -84,31 +82,33 @@ namespace Parameters.Models
 
                     vistaActual.TemporaryViewModes.DeactivateAllModes();
 
-                    List<ElementId> elementos = new List<ElementId>();
-
                     foreach (Element elem in todosElementos)
                     {
-                        Parameter param = elem.LookupParameter(parametro.Nombre);
-
-                        if (param != null)
+                        try
                         {
-                            if (valor.ToString() == null || valor.ToString() == string.Empty)
-                            {
-                                elementos.Add(elem.Id);
-                            }
-                            else
-                            {
-                                string valorParametro = param.AsString() != null ? param.AsString() : param.AsValueString();
+                            Parameter param = elem.LookupParameter(parametro.Nombre);
 
-                                if (valorParametro == valor.ToString())
+                            if (param != null)
+                            {
+                                if (valor.ToString() == null || valor.ToString() == string.Empty)
                                 {
-                                    elementos.Add(elem.Id);
+                                    elementosSeleccionados.Add(elem.Id);
+                                }
+                                else
+                                {
+                                    string valorParametro = param.AsString() != null ? param.AsString() : param.AsValueString();
+
+                                    if (valorParametro == valor.ToString())
+                                    {
+                                        elementosSeleccionados.Add(elem.Id);
+                                    }
                                 }
                             }
                         }
+                        catch (Exception) { }
                     }
 
-                    vistaActual.IsolateElementsTemporary(elementos);
+                    vistaActual.IsolateElementsTemporary(elementosSeleccionados);
 
                     tr.Commit();
                 }
@@ -117,7 +117,10 @@ namespace Parameters.Models
 
         public void SeleccionarElementos(ElementoParametro Parametro)
         {
-
+            if (elementosSeleccionados.Count > 0)
+            {
+                UIDoc.Selection.SetElementIds(elementosSeleccionados);
+            }
         }
     }
 }
