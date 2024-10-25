@@ -9,6 +9,7 @@ using Autodesk.Revit.DB;
 using System.Windows;
 using Parameters.Base;
 using Parameters.Models;
+using System.Diagnostics;
 
 namespace Parameters.ViewModels
 {
@@ -17,15 +18,20 @@ namespace Parameters.ViewModels
         private ParameterScannerModel model;
         private ObservableCollection<ElementoParametro> parametros;
         private ElementoParametro parametro;
-        private object valorParametro = string.Empty;
+        private string valorParametro = string.Empty;
 
         public ParameterScannerViewModel() { }
 
         public ParameterScannerViewModel(ParameterScannerModel mo)
         {
             Modelo = mo;
-            Parametros = Modelo.TodosParametros;
-            Parametro = Parametros.FirstOrDefault();
+
+            Parametros = Modelo.TodosLosParametros();
+
+            if (Parametros.Count > 0)
+            {
+                Parametro = Parametros.FirstOrDefault();
+            }
         }
 
         public ParameterScannerModel Modelo
@@ -60,7 +66,7 @@ namespace Parameters.ViewModels
             }
         }
 
-        public object ValorParametro
+        public string ValorParametro
         {
             get { return valorParametro; }
             set
@@ -70,20 +76,31 @@ namespace Parameters.ViewModels
             }
         }
 
-        public RelayCommand AislarCommand => new RelayCommand(execute => AislarElementos(), canExecute => { return true; });
+        public RelayCommand AislarCommand => new RelayCommand(execute => AislarElementos(execute), canExecute => { return true; });
 
         public RelayCommand SeleccionarCommand => new RelayCommand(execute => SeleccionarElementos(execute), canExecute => { return true; });
 
-        private void AislarElementos()
+        private void AislarElementos(object ventana)
         {
+            if (ValorParametro is null)
+            {
+                ValorParametro = string.Empty;
+            }
+
             Modelo.AislarElementos(Parametro, ValorParametro);
+
+            try
+            {
+                (ventana as Window).Activate();
+            }
+            catch (Exception) { }
         }
 
-        private void SeleccionarElementos(object parameter)
+        private void SeleccionarElementos(object ventana)
         {
             Modelo.SeleccionarElementos(Parametro);
 
-            if (parameter is Window window)
+            if (ventana is Window window)
             {
                 window.DialogResult = true;
                 window.Close();

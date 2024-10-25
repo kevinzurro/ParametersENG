@@ -21,7 +21,6 @@ namespace Parameters.Models
     public class ParameterScannerModel : ModelBase
     {
         private View vistaActual;
-        private ObservableCollection<ElementoParametro> todosParametros;
         private List<Element> todosElementos = new List<Element>();
         private List<ElementId> elementosSeleccionados = new List<ElementId>();
 
@@ -35,43 +34,37 @@ namespace Parameters.Models
             vistaActual = Doc.ActiveView;
             
             todosElementos = new FilteredElementCollector(Doc).WhereElementIsNotElementType().Cast<Element>().ToList();
-
-            todosParametros = TodosLosParametros();
         }
 
-        public ObservableCollection<ElementoParametro> TodosParametros
+        public ObservableCollection<ElementoParametro> TodosLosParametros()
         {
-            get { return todosParametros; }
-        }
+            ObservableCollection<ElementoParametro> obsParam = new ObservableCollection<ElementoParametro>();
 
-        private ObservableCollection<ElementoParametro> TodosLosParametros()
-        {
-            try
+            List<ParameterElement> colector = new FilteredElementCollector(Doc).
+                                                  OfClass(typeof(ParameterElement)).
+                                                  Cast<ParameterElement>().
+                                                  OrderBy(x => x.Name).
+                                                  ToList();
+
+            foreach (ParameterElement paraElem in colector)
             {
-                ObservableCollection<ElementoParametro> obsParam = new ObservableCollection<ElementoParametro>();
-
-                List<ParameterElement> colector = new FilteredElementCollector(Doc).
-                                                      OfClass(typeof(ParameterElement)).
-                                                      Cast<ParameterElement>().
-                                                      OrderBy(x=>x.Name).
-                                                      ToList();
-
-                foreach (ParameterElement defi in colector)
+                try
                 {
-                    if (defi != null && obsParam.Where(x => x.Nombre == defi.Name).ToList().Count == 0)
+                    if (paraElem != null && obsParam.Where(x => x.Nombre == paraElem.Name).ToList().Count == 0)
                     {
-                        obsParam.Add(new ElementoParametro(defi));
+                        obsParam.Add(new ElementoParametro(paraElem));
                     }
                 }
-
-                return obsParam;
+                catch (Exception) { }
             }
 
-            catch (Exception){ return null; }
+            return obsParam;
         }
 
-        public void AislarElementos(ElementoParametro parametro, object value)
+        public void AislarElementos(ElementoParametro parametro, string value)
         {
+            elementosSeleccionados.Clear();
+
             ViewType tipoVista = vistaActual.ViewType;
 
             string valor = value.ToString();
@@ -94,18 +87,11 @@ namespace Parameters.Models
 
                             if (param != null)
                             {
-                                if (valor == null || valor == string.Empty)
+                                string valorParametro = ObtenerValorDeParametro(param);
+
+                                if (valorParametro == valor)
                                 {
                                     elementosSeleccionados.Add(elem.Id);
-                                }
-                                else
-                                {
-                                    string valorParametro = param.AsString() != null ? param.AsString() : param.AsValueString();
-
-                                    if (valorParametro == valor.ToString())
-                                    {
-                                        elementosSeleccionados.Add(elem.Id);
-                                    }
                                 }
                             }
                         }
@@ -115,11 +101,18 @@ namespace Parameters.Models
                     if (elementosSeleccionados.Count > 0)
                     {
                         vistaActual.IsolateElementsTemporary(elementosSeleccionados);
-                        
-                        TaskDialog.Show("Parameter Scanner", elementosSeleccionados.Count.ToString() + " items were found with the value " + valor);
                     }
 
                     tr.Commit();
+                }
+
+                if (elementosSeleccionados.Count > 0)
+                {
+                    TaskDialog.Show("Parameter Scanner", elementosSeleccionados.Count.ToString() + " items were found with the value " + valor);
+                }
+                else
+                {
+                    TaskDialog.Show("Parameter Scanner", "No items were found with the value");
                 }
             }
         }
@@ -130,6 +123,54 @@ namespace Parameters.Models
             {
                 UIDoc.Selection.SetElementIds(elementosSeleccionados);
             }
+        }
+
+        private string ObtenerValorDeParametro(Parameter param)
+        {
+            string valorParametro = string.Empty;
+
+            switch (param.StorageType)
+            {
+                case StorageType.Double:
+                    valorParametro = param.AsDouble().ToString();
+                    break;
+
+                case StorageType.ElementId:
+                    valorParametro = param.AsValueString().ToString();
+                    break;
+
+                case StorageType.Integer:
+                    if (param.Definition.ParameterType == ParameterType.YesNo)
+                    {
+                        valorParametro = param.AsValueString().ToString();
+                    }
+                    else
+                    {
+                        valorParametro = param.AsInteger().ToString();
+                    }
+                    break;
+
+                case StorageType.String:
+                    if (param.AsString() != null)
+                    {
+                        valorParametro = param.AsString();
+                    }
+                    else if (param.AsValueString() != null)
+                    {
+                        valorParametro = param.AsValueString();
+                    }
+                    else
+                    {
+                        valorParametro = string.Empty;
+                    }
+                    break;
+
+                default:
+                    valorParametro = string.Empty;
+                    break;
+            }
+
+            return valorParametro;
         }
     }
 }

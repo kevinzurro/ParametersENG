@@ -7,9 +7,9 @@
         xmlns:model="clr-namespace:Parameters.Models"
         xmlns:vm="clr-namespace:Parameters.ViewModels"
         mc:Ignorable="d" 
-        d:DesignHeight="240" d:DesignWidth="400"
-        MinHeight="240" MaxHeight="240" MinWidth="400" MaxWidth="400"
-        Height="240" Width="400"
+        d:DesignHeight="250" d:DesignWidth="400"
+        MinHeight="250" MaxHeight="240" MinWidth="400" MaxWidth="400"
+        Height="250" Width="400"
         Title="Parameter Scanner"
         WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
 
@@ -23,6 +23,7 @@
 
         <Grid.RowDefinitions>
 
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -110,7 +111,8 @@
                     Width="100"
                     Content="Isolate in View"
                     Margin="10"
-                    Command="{Binding AislarCommand}">
+                    Command="{Binding AislarCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
             </Button>
 
             <Button Grid.Column="1"
@@ -123,6 +125,6 @@
             </Button>
 
         </Grid>
-        
+
     </Grid>
 </Window>

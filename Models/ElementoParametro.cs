@@ -14,7 +14,18 @@ namespace Parameters.Models
 
         public ElementoParametro(ParameterElement param)
         {
-            Nombre = param.Name;
+            if (param != null)
+            {
+                Nombre = param.Name;
+            }
+        }
+
+        public ElementoParametro(Parameter param)
+        {
+            if(param != null)
+            {
+                Nombre = param.Definition.Name;
+            }
         }
 
         public string Nombre
